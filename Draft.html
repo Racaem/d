@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班级验证与算命</title>
+    <style>
+        /* 全局样式 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 验证界面样式 */
+        .verification-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-color: aliceblue;
+        }
+
+        .question-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background-color: #f0f8ff;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .next-btn {
+            background-color: aliceblue;
+            border: 2px solid black;
+            padding: 10px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .next-btn:hover {
+            background-color: #d4e6f7;
+        }
+
+        .timer {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* 主界面样式 */
+        .main-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+            flex: 1;
+            min-width: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .fortune-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .fortune-btn {
+            background-color: #ffcccb;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .fortune-btn:hover {
+            background-color: #ffb6b5;
+        }
+
+        .fortune-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .console {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            height: 150px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .info-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-section {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .info-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .info-content {
+            line-height: 1.6;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .question-box {
+                padding: 20px;
+            }
+
+            .question-title {
+                font-size: 1.2rem;
+            }
+
+            .header img {
+                min-width: 150px;
+            }
+
+            .info-section {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <script>
+        alert("为了确认你是站长批准的人，请先完成9道题");
+        a=prompt("请输入你的访问号:");
+        b=prompt("请输入你的姓名:");
+        c=prompt("请输入你的座号:");
+        d=prompt("站长叫什么名字:");
+        if (d==="石景鑫"){
+            if (a==="LiumingYang277360" && b==="刘铭扬" && c==="17") {}
+            else if (a==="ZengFieDra2893814" && b==="曾飞龙" && c==="71"){}
+            else if (a==="1" && b==="1" && c === "1"){}
+            else {window.location.href="about:blank"}
+        }else {window.location.href="about:blank"}
+    </script>
+</head>
+<body>
+<!-- 验证界面 -->
+<div class="verification-container" id="verification">
+    <div class="question-box">
+        <h2 class="question-title" id="question-title">问题加载中...</h2>
+        <div class="options-container" id="options-container">
+            <!-- 选项将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    <button class="next-btn" id="next-btn" disabled>下一题</button>
+    <div class="timer" id="timer">剩余时间: 20秒</div>
+</div>
+
+<!-- 主界面 -->
+<div class="main-container" id="main">
+    <div class="header">
+        <!-- 图片路径在此处设置 -->
+        <img src="/IM/a.png" alt="1">
+        <img src="/IM/b.png" alt="2">
+        <img src="/IM/c.png" alt="3">
+        <img src="/IM/d.png" alt="4">
+    </div>
+
+    <div class="content">
+        <div class="fortune-section">
+            <button class="fortune-btn" id="fortune-btn">点击即可算命</button>
+            <h3 class="fortune-title">预计染花香的未来</h3>
+            <div class="console" id="console">
+                <!-- 算命结果将显示在这里 -->
+            </div>
+        </div>
+    </div>
+
+    <div class="info-sections">
+        <div class="info-section" style="background-color: rgb(255, 230, 230);">
+            <h3 class="info-title">狂喷区域</h3>
+            <div class="info-content">
+                你配你配你最配，你在厕所里开会<br>
+                配到厕所里开会，泡面可乐茶话会<br>
+                <br>
+                我看你才没母亲，你纸杯半径64千米，<br>
+                你都把你奶奶的纸毛都逼你当调味料了，<br>
+                直接把你把的纸杯拔下来，拿去给你煲鹅の汤了，<br>
+                你邱毛免蛊里，免蛊里都逼你拿去煲3天的粥食，<br>
+                你个户口本™都只有2页了，其他页书都被风吹走了，<br>
+                お前は本当に大畜生だ、大畜生，<br>
+                俺叼你啊妈給，把我P成表情包，埋了你mother了你<br>
+                你給二分之一纸杯都是瓜子二手车送的<br>
+                因为你不小心把你的纸杯和面蛊全部拔下来了，一个炖鹅の汤了，一个丢河里了<br>
+                「お前の親は、お前より痔瘻の方がまだ役に立つと知ってたら、即座に子宮に押し戻してやり直してたろうな。」
+                （你爹妈当年要是知道生出来的玩意儿连痔疮都比你有用，估计连夜把你塞回子宫回炉重造。）<br>
+                「お前が生きてる唯一の価値は、ゴミ分別で『有害不可燃ゴミ』の雇用を生み出したことだけだ。」
+                （你这种人活在世界上唯一的贡献，就是给垃圾分类增加了‘不可回收有害垃圾’的就业岗位。）<br>
+                「あなたの頭の中のニューロンは集団ストライキをしたのではないでしょうか。草履虫のニューラルネットワークもあなたの意思決定システムより論理的です」<br>
+                （“你脑子里的神经元是不是集体罢工了？连草履虫的神经网都比你的决策系统有逻辑。”）<br>
+                「鏡を見ているとき、鏡はその場で自爆していないので、今度は便器の水を鏡にして、少なくとも反射板を節約することをお勧めします」<br>
+                （“你照镜子的时候，镜子没当场自爆算它质量过硬，建议你下次用马桶水当镜面，至少还能省个反光板。”）<br>
+                「平行宇宙のすべてのバージョンのあなたは戸籍抹消を申請しています。理由は『この宇宙のバカとDNAを共有したくない』から統一されています」<br>
+                （“平行宇宙里所有版本的你都在申请注销户口，理由统一是‘不想和这个宇宙的傻逼共享DNA’。”）
+            </div>
+        </div>
+
+        <div class="info-section" style="background-color: rgb(230, 255, 230);">
+            <h3 class="info-title">算理区域</h3>
+            <div class="info-content">
+                你是不是精神病范？<br>
+                你找我学编程，老是让我唱歌干啥,<br>
+                还说我不配，你这样子能到什么程度？<br>
+                我不敢说你做的APP能成为人人手机中的APP,<br>
+                但是，就你那scratch能开发吗？要是你开发出来高级功能而且性能很好的话<br>
+                我直接快手直播倒立洗脑。scratch基于html+css+js<br>
+                对于复杂项目，不瓶颈才怪。是你能用scratch开发丝滑游戏，还是丝滑APP<br>
+                你他妈是不是脑子进水了？Scratch这种幼儿园玩具也敢拿出来丢人现眼？就你那破积木拼出来的玩意儿，连个像样的循环都跑不利索，还妄想开发高性能应用？笑死人了！Python随便写个爬虫都能把你那垃圾Scratch项目按在地上摩擦！<br>
+                你Scratch能搞多线程吗？能处理百万级数据吗？连个简单的文件读写都要靠插件，废物东西！老子用Python随手写个算法，效率都能甩你Scratch十八条街！还丝滑游戏？就你那破引擎，渲染个3D方块都能卡成PPT，趁早滚回去玩你的儿童编程吧！<br>
+                还他妈敢提HTML+JS？底层？就Scratch那点性能，连个稍微复杂点的物理碰撞都算不明白，你拿什么跟真正的编程语言比？Python随便一个库都能把你那破烂玩意儿秒成渣！你要是真能用Scratch写出一个能流畅运行的高端应用，老子当场把键盘吃了！<br>
+                醒醒吧！Scratch就是个入门玩具，别他妈自欺欺人了！想学真本事就老老实实学Python，别在这浪费生命堆你那破积木！<br>
+                还搁这儿嘴硬呢？你Scratch连个像样的数据库连接都搞不定，Python两行代码就能操作MySQL信不信？<br>你那个破玩意儿连个多人在线功能都实现不了，Python写个socket通信分分钟吊打你！就你这种水平还妄想做APP？<br>连个基本的API请求都要折腾半天，Python的requests库直接一行代码搞定！<br>
+                你Scratch能调用GPU加速吗？能搞机器学习吗？Python的TensorFlow、PyTorch随便一个框架都能让你那破积木代码羞愧到自毁！<br>不服？你倒是用Scratch写个能识别手写数字的AI啊？写不出来就闭嘴！<br>垃圾玩意儿也配跟Python比？滚回去玩你的乐高积木吧！<br>
+            </div>
+        </div>
+
+        <div class="info-section" style="background-color: rgb(230, 230, 255);">
+            <h3 class="info-title">黑名单</h3>
+            <div class="info-content">
+                1、抖音账户 @染花香  （认识陈梓铭的）<br>
+                2、快手账户 @ziming （伪装陈梓铭的sour fork）<br>
+                3、快手账户 @婷婷 | 婷家私房蛋糕 （Sb玩意）<br>
+                4、快手账户 @小淇    （发点日语就拉黑，你™都没了）<br>
+                5、QQ账户  @ღ᭄ꦿ꯭光翎ঞৣঁপ᭄᪲
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 题目数据
+    const questions = [
+        {
+            question: "我们班谁是班主任叫什么名字？",
+            options: ["A、李文新", "B、叶碧香", "C、石巧苑", "D、曾澜", "E、刘芬"],
+            correctAnswer: "D",
+            isMultiple: false,
+            userAnswer: null
+        },
+        {
+            question: "我们班在几楼？",
+            options: ["A、3", "B、5", "C、6", "D、2"],
+            correctAnswer: "D",
+            isMultiple: false,
+            userAnswer: null
+        },
+        {
+            question: "我们班多少个人？",
+            options: ["A、56", "B、80", "C、71", "D、132"],
+            correctAnswer: "C",
+            isMultiple: false,
+            userAnswer: null
+        },
+        {
+            question: "叶碧香是谁？",
+            options: ["A、数学老师", "B、语文老师", "C、英语老师", "D、体育老师", "E、音乐老师", "F、信息老师"],
+            correctAnswer: "A",
+            isMultiple: false,
+            userAnswer: null
+        },
+        {
+            question: "我们学校哪几个年级有信息课？（多选）",
+            options: ["A、1", "B、2", "C、3", "D、4", "E、5", "F、6"],
+            correctAnswer: ["D", "E"],
+            isMultiple: true,
+            userAnswer: null
+        }
+    ];
+
+    // 算命结果数组
+    const fortuneResults = [
+        "2032年，你将要在奥运会上裸体跳芭蕾",
+        "2042年，你在山姆超市裸体站岗",
+        "你的内裤会替换成网面内裤",
+        "你的内衣因成adult而变成网面内衣",
+        "刚找大师算了一卦，说我最近犯小人，仔细一看，原来是两位‘赛博女侠’在偷偷做法。大师说她们一个五行缺德，一个八字欠赞，建议多给我磕几个电子木鱼，不然下辈子转世成Wi-Fi信号，天天被人断网。",
+        "最新AI面相分析显示，偷我图的那两位，一个‘印堂发黑，主账号被封’，一个‘眼神涣散，主点赞不过百’。建议你们赶紧去庙里烧烧高香，别到时候连算法都嫌弃你们。",
+        "刚刚抽了张塔罗牌，牌面显示——‘逆位的盗图者’，意味着你们近期会遭遇：发啥都没流量/评论区全是‘已举报’/粉丝数比我的血压升得还慢,建议你们趁早收手，不然下次抽到的就是‘封号死神’了。",
+        "听说有人拿我照片做法？那我只好反向施法了——🔮诅咒你们的自拍永远对不上焦🔮诅咒你们的视频永远卡在99播放🔮诅咒你们的评论区永远只有‘哈哈哈’但没人点赞",
+        "刚请了位赛博风水大师看了下，说你们俩的账号磁场有问题：头像带煞，主招举报/昵称犯冲，主掉粉/内容阴气太重，主限流,建议你们改个名，比如叫‘知错就改’或者‘重新做人’，运势或许还能抢救一下",
+        "愿你2033年在白宫草坪上表演蛆虫模仿秀，全程直播被前任们围观点评。",
+        "祝你2040年被迫在海底火山口用腋毛织毛衣，边织边被水母扇耳光。",
+        "愿你每届世界杯决赛时，肛门自动播放你小学尿床的监控录像，解说员还是你老板。",
+        "祝你下次生日时，全身长满会唱儿歌的蘑菇，而你的暗恋对象负责每天给蘑菇浇水。",
+        "愿你的WiFi永远自动连接‘公共厕所监控系统’，且你的浏览记录被投影到公司年会背景板上。",
+        // 新增的10条诅咒（荒诞+羞辱+恶心升级版）
+        "愿你2050年在联合国大会上表演‘肛门喷彩虹’，全球直播时卡在最高潮的瞬间，被做成NFT永久流传。",
+        "祝你每次点外卖都收到前任用过的假牙，而配送员永远是你最讨厌的亲戚，边送边朗诵你的黑历史。",
+        "愿你每次发自拍，AI都自动替换成痔疮特写，配文‘最新款美颜滤镜，亲测有效’。",
+        "祝你睡觉时蟑螂在你耳边开演唱会，曲目全是你的黑料，主唱还是你暗恋对象的声音。",
+        "愿你每次上厕所，智能马桶都自动发微博：‘主人今日份的答辩，评分：3/10，建议多喝水’。",
+        "祝你手机永远自动连接‘相亲相爱一家人’群视频，而你正在看的‘学习资料’会同步投屏到家族电视上。",
+        "愿你每次考试，考卷都变成‘如何治疗脚气’问卷，监考老师还大声朗读你的答案并点评。",
+        "祝你家的扫地机器人只会在你脚边转圈，并用机械音说‘检测到大型不可回收垃圾，建议立即分类’。", 
+        "愿你每次打喷嚏，都会喷出一只活青蛙，而青蛙会立刻开始播报你的浏览器记录。",
+        "祝你每次照镜子，镜子里都会出现你未来的秃头形象，并附带弹幕：‘这是你不积德的下场’。",
+        "愿你所有社交账号的头像都被AI替换成‘蠕虫cosplay你’的动图，并自动@你所有好友。"
+    ];
+
+    // DOM元素
+    const verificationContainer = document.getElementById("verification");
+    const mainContainer = document.getElementById("main");
+    const questionTitle = document.getElementById("question-title");
+    const optionsContainer = document.getElementById("options-container");
+    const nextBtn = document.getElementById("next-btn");
+    const timerElement = document.getElementById("timer");
+    const fortuneBtn = document.getElementById("fortune-btn");
+    const consoleElement = document.getElementById("console");
+
+    // 变量
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let timeLeft = 20;
+    let timer;
+
+    // 初始化
+    function init() {
+        showQuestion(currentQuestionIndex);
+        startTimer();
+    }
+
+    // 显示问题
+    function showQuestion(index) {
+        if (index >= questions.length) {
+            // 所有问题回答完毕，检查所有答案
+            checkAllAnswers();
+            return;
+        }
+
+        const question = questions[index];
+        questionTitle.textContent = `问题${index + 1}: ${question.question}`;
+        optionsContainer.innerHTML = "";
+        selectedAnswers = [];
+
+        // 创建选项
+        question.options.forEach((option, i) => {
+            const optionElement = document.createElement("label");
+            optionElement.className = "option";
+
+            const input = document.createElement("input");
+            input.type = question.isMultiple ? "checkbox" : "radio";
+            input.name = "option";
+            input.value = option.split("、")[0]; // 获取选项字母
+
+            // 如果之前已经选择过，恢复选择状态
+            if (question.userAnswer && question.userAnswer.includes(input.value)) {
+                input.checked = true;
+                selectedAnswers.push(input.value);
+                nextBtn.disabled = false;
+            }
+
+            input.addEventListener("change", () => {
+                if (question.isMultiple) {
+                    if (input.checked) {
+                        selectedAnswers.push(input.value);
+                    } else {
+                        selectedAnswers = selectedAnswers.filter(a => a !== input.value);
+                    }
+                } else {
+                    selectedAnswers = [input.value];
+                }
+
+                nextBtn.disabled = selectedAnswers.length === 0;
+            });
+
+            optionElement.appendChild(input);
+            optionElement.appendChild(document.createTextNode(option));
+            optionsContainer.appendChild(optionElement);
+        });
+
+        nextBtn.disabled = selectedAnswers.length === 0;
+    }
+
+    // 检查当前答案
+    function checkCurrentAnswer() {
+        const question = questions[currentQuestionIndex];
+        // 保存用户答案
+        question.userAnswer = [...selectedAnswers];
+        return true; // 这里不再检查，留到最后统一检查
+    }
+
+    // 检查所有答案
+    function checkAllAnswers() {
+        let allCorrect = true;
+
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            let isCorrect;
+
+            if (question.isMultiple) {
+                // 多选题检查
+                isCorrect = question.userAnswer &&
+                    question.userAnswer.length === question.correctAnswer.length &&
+                    question.userAnswer.every(answer => question.correctAnswer.includes(answer));
+            } else {
+                // 单选题检查
+                isCorrect = question.userAnswer && question.userAnswer[0] === question.correctAnswer;
+            }
+
+            if (!isCorrect) {
+                allCorrect = false;
+                break;
+            }
+        }
+
+        if (allCorrect) {
+            // 所有问题回答正确，显示主界面
+            verificationContainer.style.display = "none";
+            mainContainer.style.display = "flex";
+            clearInterval(timer);
+        } else {
+            // 有任何错误，直接退出页面
+            window.location.href = "about:blank";
+        }
+    }
+
+    // 下一题
+    nextBtn.addEventListener("click", () => {
+        if (checkCurrentAnswer()) {
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+        }
+    });
+
+    // 计时器
+    function startTimer() {
+        timer = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = `剩余时间: ${timeLeft}秒`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                // 时间到，跳转到错误页面
+                window.location.href = "about:blank";
+            }
+        }, 1000);
+    }
+
+    // 算命功能
+    fortuneBtn.addEventListener("click", () => {
+        const randomIndex = Math.floor(Math.random() * fortuneResults.length);
+        const result = fortuneResults[randomIndex];
+        const timestamp = new Date().toLocaleTimeString();
+
+        consoleElement.innerHTML += `<p>[${timestamp}] ${result}</p>`;
+        // 滚动到底部
+        consoleElement.scrollTop = consoleElement.scrollHeight;
+    });
+
+    // 初始化应用
+    init();
+</script>
+</body>
+</html>
